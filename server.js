@@ -8,10 +8,10 @@ require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server,{ 
-    cors: {
-      origin: 'http://localhost:3000'
-    }
+const io = socketIo(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL,
+  }
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,7 +57,7 @@ app.post('/api/messages', async (req, res) => {
   });
   try {
     const newMessage = await message.save();
-    console.log("newMessage",newMessage.text);
+    console.log("newMessage", newMessage.text);
     io.emit('newMessage', newMessage);
 
     res.status(201).json(newMessage);
